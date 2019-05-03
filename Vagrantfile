@@ -310,6 +310,9 @@ Vagrant.configure("2") do |config|
 
   # Configurations from 1.0.x can be placed in Vagrant 1.1.x specs like the following.
   config.vm.provider :virtualbox do |v|
+    # Move the ubuntu-bionic-18.04-cloudimg-console.log file to log directory.
+    v.customize ["modifyvm", :id, "--uartmode1", "file", File.join(Dir.pwd, "log/ubuntu-bionic-18.04-cloudimg-console.log")]
+
     v.customize ["modifyvm", :id, "--memory", vvv_config['vm_config']['memory']]
     v.customize ["modifyvm", :id, "--cpus", vvv_config['vm_config']['cores']]
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -378,12 +381,9 @@ Vagrant.configure("2") do |config|
   # Default Ubuntu Box
   #
   # This box is provided by Ubuntu vagrantcloud.com and is a nicely sized (332MB)
-  # box containing the Ubuntu 14.04 Trusty 64 bit release. Once this box is downloaded
+  # box containing the Ubuntu 18.04 Bionic 64 bit release. Once this box is downloaded
   # to your host computer, it is cached for future use under the specified box name.
-  # 
-  # Note: We would like to update this to a newer box, but a naive update would
-  # destroy everybodies databases, it's not as simple as it first seems
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/bionic64"
 
   # If we're at a contributor day, switch the base box to the prebuilt one
   if defined? vvv_config['vm_config']['wordcamp_contributor_day_box'] then
@@ -394,22 +394,22 @@ Vagrant.configure("2") do |config|
 
   # The Parallels Provider uses a different naming scheme.
   config.vm.provider :parallels do |v, override|
-    override.vm.box = "parallels/ubuntu-14.04"
+    override.vm.box = "parallels/ubuntu-18.04"
   end
 
   # The VMware Fusion Provider uses a different naming scheme.
   config.vm.provider :vmware_fusion do |v, override|
-    override.vm.box = "puphpet/ubuntu1404-x64"
+    override.vm.box = "puphpet/ubuntu1804-x64"
   end
 
   # VMWare Workstation can use the same package as Fusion
   config.vm.provider :vmware_workstation do |v, override|
-    override.vm.box = "puphpet/ubuntu1404-x64"
+    override.vm.box = "puphpet/ubuntu1804-x64"
   end
 
   # Hyper-V uses a different base box.
   config.vm.provider :hyperv do |v, override|
-    override.vm.box = "bento/ubuntu-14.04"
+    override.vm.box = "bento/ubuntu-18.04"
   end
 
   config.vm.hostname = "vvv"
